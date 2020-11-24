@@ -25,7 +25,8 @@ const (
 	DefaultServiceName    = "srv-configuration"
 	DefaultStoragePath    = "./config/raw_config"
 
-	DiffConfigTopic = "diff-config"
+	FirstRunInitTopic = "first-run-init"
+	DiffConfigTopic   = "diff-config"
 )
 
 type Agent struct {
@@ -107,6 +108,9 @@ func (a *Agent) Start() {
 	}
 
 	a.getFistRunConfig()
+	_, _ = a.evt.AsyncPublish(event.Message{
+		Topic: FirstRunInitTopic,
+	})
 	a.runtimeConfig()
 }
 
